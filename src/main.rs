@@ -25,7 +25,9 @@ fn main() {
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
 
-        println!("{}", guess)
+        // TODO: Convert to Some(char) or None first
+
+        update_gap_word(&gap_word, &guess);
     }
 }
 
@@ -63,4 +65,14 @@ fn print_gap_word(gap_word: &GapWord) {
         print!("{}", value_or_blank)
     }
     print!("\n");
+}
+
+fn update_gap_word(gap_word: &GapWord, guess: &String) {
+    for digit in gap_word {
+        // TODO: Make this less ugly by only accepting a char for guess
+        if digit.value == guess.chars().nth(0).unwrap_or('_') {
+            // TODO: Set revealed to true
+            println!("You found a correct character, yey!")
+        }
+    }
 }
