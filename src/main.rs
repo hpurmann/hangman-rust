@@ -17,6 +17,7 @@ fn main() {
     let gap_word = init_gap_word(&solution);
 
     for i in 0..MAXIMUM_TRIES {
+        print_gap_word(&gap_word);
         let mut guess = String::new();
         println!("{} tries left.", MAXIMUM_TRIES-i);
         println!("Guess a character.");
@@ -49,4 +50,17 @@ fn init_gap_word(string: &String) -> GapWord {
         vector.push(current_digit);
     }
     return vector;
+}
+
+fn print_gap_word(gap_word: &GapWord) {
+    for digit in gap_word {
+        let value_or_blank: char;
+        if digit.revealed {
+            value_or_blank = digit.value;
+        } else {
+            value_or_blank = "_".chars().nth(0).unwrap_or('_');
+        }
+        print!("{}", value_or_blank)
+    }
+    print!("\n");
 }
