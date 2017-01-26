@@ -8,14 +8,13 @@ struct Digit {
     revealed: bool,
 }
 
+type GapWord = Vec<Digit>;
+
 fn main() {
     let solution: String = get_solution();
     debug(&solution);
 
-    let solution_vector = init_digits(&solution);
-    for x in &solution_vector {
-        println!("Value: {}, Revealed: {}", x.value, x.revealed)
-    }
+    let gap_word = init_gap_word(&solution);
 
     for i in 0..MAXIMUM_TRIES {
         let mut guess = String::new();
@@ -39,7 +38,7 @@ fn debug(message: &String) {
     }
 }
 
-fn init_digits(string: &String) -> Vec<Digit> {
+fn init_gap_word(string: &String) -> GapWord {
     let mut vector: Vec<Digit> = Vec::new();
     let str = string.as_str();
     for my_char in str.chars() {
