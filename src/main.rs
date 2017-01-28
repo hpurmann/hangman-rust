@@ -42,7 +42,7 @@ fn debug(message: &String) {
 }
 
 fn init_gap_word(string: &String) -> GapWord {
-    let mut vector: Vec<Digit> = Vec::new();
+    let mut vector: GapWord = Vec::new();
     let str = string.as_str();
     for my_char in str.chars() {
         let current_digit = Digit {
