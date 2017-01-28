@@ -14,7 +14,7 @@ fn main() {
     let solution: String = get_solution();
     debug(&solution);
 
-    let gap_word = init_gap_word(&solution);
+    let mut gap_word = init_gap_word(&solution);
 
     for i in 0..MAXIMUM_TRIES {
         print_gap_word(&gap_word);
@@ -25,9 +25,9 @@ fn main() {
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
 
-        // TODO: Convert to Some(char) or None first
+        let guessed_char = guess.as_str().chars().nth(0);
 
-        update_gap_word(&gap_word, &guess);
+        gap_word = update_gap_word(&gap_word, &guessed_char);
     }
 }
 
@@ -67,12 +67,23 @@ fn print_gap_word(gap_word: &GapWord) {
     print!("\n");
 }
 
-fn update_gap_word(gap_word: &GapWord, guess: &String) {
+fn update_gap_word(gap_word: &GapWord, guessed_char: &Option<char>) -> GapWord {
+    let mut vector: GapWord = Vec::new();
     for digit in gap_word {
-        // TODO: Make this less ugly by only accepting a char for guess
-        if digit.value == guess.chars().nth(0).unwrap_or('_') {
-            // TODO: Set revealed to true
-            println!("You found a correct character, yey!")
+        let current_digit: Digit;
+        if digit.value == guessed_char.unwrap() {
+            current_digit = Digit {
+                value: digit.value,
+                revealed: true,
+            };
         }
+        else {
+            current_digit = Digit {
+                value: digit.value,
+                revealed: if digit.revealed { digit.revealed } else { false },
+            };
     }
+        vector.push(current_digit)
+    }
+    return vector;
 }
