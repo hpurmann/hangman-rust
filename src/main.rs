@@ -32,7 +32,8 @@ fn main() {
 }
 
 fn get_solution() -> String {
-    return "computer".to_string()
+    // TODO Make program case-insensitive
+    return "Unimaginatively".to_string()
 }
 
 fn debug(message: &String) {
@@ -82,7 +83,7 @@ fn update_gap_word(gap_word: &GapWord, guessed_char: &Option<char>) -> GapWord {
                 value: digit.value,
                 revealed: if digit.revealed { digit.revealed } else { false },
             };
-    }
+        }
         vector.push(current_digit)
     }
     return vector;
