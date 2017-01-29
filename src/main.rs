@@ -18,14 +18,13 @@ fn main() {
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
 
-        let guessed_char = guess.as_str().chars().nth(0).unwrap();
+        let guessed_char = guess.as_str().to_uppercase().chars().nth(0).unwrap();
         guessed_chars.insert(guessed_char);
     }
 }
 
 fn get_solution() -> String {
-    // TODO Make program case-insensitive
-    return "Unimaginatively".to_string()
+    return "Unimaginatively".to_string().to_uppercase();
 }
 
 fn debug(message: &String) {
