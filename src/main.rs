@@ -26,7 +26,7 @@ fn main() {
             .expect("Failed to read line");
 
         let guessed_char = guess.as_str().to_uppercase().chars().nth(0).unwrap();
-        if !solution.contains(guessed_char) {
+        if !solution.contains(guessed_char) || guessed_chars.contains(&guessed_char) {
             wrong_answers += 1;
         }
         guessed_chars.insert(guessed_char);
