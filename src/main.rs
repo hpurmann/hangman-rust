@@ -13,7 +13,8 @@ fn main() {
 
     loop {
         let gap_word = get_gap_word(&solution, &guessed_chars);
-        println!("{}", gap_word);
+        println!("{} ({}/{} wrong answers)", gap_word, wrong_answers, MAXIMUM_WRONG_ANSWERS);
+
         if !gap_word.contains('_') {
             println!("YOU WIN!");
             break;
@@ -23,14 +24,12 @@ fn main() {
             println!("YOU LOSE!");
             break;
         }
-        let mut guess = String::new();
-        println!("{} tries left.", MAXIMUM_WRONG_ANSWERS - wrong_answers);
-        println!("Guess a character.");
 
+        let mut guess = String::new();
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
-
         let guessed_char = guess.as_str().to_uppercase().chars().nth(0).unwrap();
+
         if !solution.contains(guessed_char) || guessed_chars.contains(&guessed_char) {
             wrong_answers += 1;
         }
