@@ -14,6 +14,10 @@ fn main() {
     loop {
         let gap_word = get_gap_word(&solution, &guessed_chars);
         println!("{}", gap_word);
+        if !gap_word.contains('_') {
+            println!("YOU WIN!");
+            break;
+        }
 
         if MAXIMUM_WRONG_ANSWERS == wrong_answers {
             println!("YOU LOSE!");
