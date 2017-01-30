@@ -2,23 +2,33 @@ use std::io;
 use std::collections::HashSet;
 
 const DEBUG: bool = true;
-const MAXIMUM_TRIES: i8 = 7;
+const MAXIMUM_WRONG_ANSWERS: i8 = 7;
 
 fn main() {
+    let mut wrong_answers: i8 = 0;
+
     let solution: String = get_solution();
     let mut guessed_chars: HashSet<char> = HashSet::new();
     debug(&solution);
 
-    for i in 0..MAXIMUM_TRIES {
+    loop {
         print_gap_word(&solution, &guessed_chars);
+
+        if MAXIMUM_WRONG_ANSWERS == wrong_answers {
+            println!("YOU LOSE!");
+            break;
+        }
         let mut guess = String::new();
-        println!("{} tries left.", MAXIMUM_TRIES-i);
+        println!("{} tries left.", MAXIMUM_WRONG_ANSWERS - wrong_answers);
         println!("Guess a character.");
 
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
 
         let guessed_char = guess.as_str().to_uppercase().chars().nth(0).unwrap();
+        if !solution.contains(guessed_char) {
+            wrong_answers += 1;
+        }
         guessed_chars.insert(guessed_char);
     }
 }
