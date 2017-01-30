@@ -12,7 +12,8 @@ fn main() {
     debug(&solution);
 
     loop {
-        print_gap_word(&solution, &guessed_chars);
+        let gap_word = get_gap_word(&solution, &guessed_chars);
+        println!("{}", gap_word);
 
         if MAXIMUM_WRONG_ANSWERS == wrong_answers {
             println!("YOU LOSE!");
@@ -43,9 +44,10 @@ fn debug(message: &String) {
     }
 }
 
-fn print_gap_word(solution: &String, guessed_chars: &HashSet<char>) {
+fn get_gap_word(solution: &String, guessed_chars: &HashSet<char>) -> String {
+    let mut gap_word: String = String::new();
     for letter in solution.chars() {
-        print!("{}", guessed_chars.get(&letter).unwrap_or(&'_'))
+        gap_word.push(*guessed_chars.get(&letter).unwrap_or(&'_'));
     }
-    print!("\n");
+    return gap_word;
 }
