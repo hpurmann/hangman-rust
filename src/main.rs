@@ -1,5 +1,11 @@
+#[macro_use]
+extern crate serde_derive;
+
+extern crate serde_json;
 use std::io;
 use std::collections::HashSet;
+
+mod words;
 
 const DEBUG: bool = true;
 const MAXIMUM_WRONG_ANSWERS: i8 = 7;
@@ -7,7 +13,7 @@ const MAXIMUM_WRONG_ANSWERS: i8 = 7;
 fn main() {
     let mut wrong_answers: i8 = 0;
 
-    let solution: String = get_solution();
+    let solution: String = words::get_random();
     let mut guessed_chars: HashSet<char> = HashSet::new();
     debug(&solution);
 
@@ -35,10 +41,6 @@ fn main() {
         }
         guessed_chars.insert(guessed_char);
     }
-}
-
-fn get_solution() -> String {
-    return "Unimaginatively".to_string().to_uppercase();
 }
 
 fn debug(message: &String) {
