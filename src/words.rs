@@ -11,12 +11,16 @@ struct Entry {
     total: i64,
 }
 
+fn res_to_entry(res: hyper::Result<String>) -> Entry {
+    return serde_json::from_str(res.unwrap().as_str()).unwrap();
+}
+
 // TODO: Get size of dictionary and choose a random offset to request
 pub fn get_random() -> String {
     println!("Getting random english word from dictionary ...");
 
     let res = get_content("http://api.pearson.com/v2/dictionaries/lasde/entries?offset=21176&limit=1");
-    let entry: Entry = serde_json::from_str(res.unwrap().as_str()).unwrap();
+    let entry: Entry = res_to_entry(res);
     if entry.status == 200 {
         println!("Request successful!");
         return "imaginatively".to_string().to_uppercase();
