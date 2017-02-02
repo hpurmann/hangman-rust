@@ -27,7 +27,7 @@ fn main() {
         }
 
         if MAXIMUM_WRONG_ANSWERS == wrong_answers {
-            println!("YOU LOSE!");
+            println!("YOU LOSE! Word was \"{}\".", solution);
             break;
         }
 
