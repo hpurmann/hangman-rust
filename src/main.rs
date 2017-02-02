@@ -8,7 +8,7 @@ use std::collections::HashSet;
 mod words;
 
 const DEBUG: bool = true;
-const MAXIMUM_WRONG_ANSWERS: i8 = 7;
+const MAXIMUM_WRONG_ANSWERS: i8 = 8;
 
 fn main() {
     let mut wrong_answers: i8 = 0;
