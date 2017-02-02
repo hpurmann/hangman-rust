@@ -2,10 +2,12 @@ extern crate serde_json;
 
 extern crate hyper;
 extern crate rand;
+extern crate spinner;
 
 use std::io::Read;
 use self::hyper::{Client};
 use self::rand::Rng;
+use self::spinner::{SpinnerBuilder};
 
 #[derive(Serialize, Deserialize)]
 struct Entry {
@@ -39,8 +41,9 @@ fn res_to_entry(res: hyper::Result<String>) -> Entry {
 pub fn get_random() -> String {
     let dict = "lasde";
     let limit = 1;
-    println!("Getting random english word from dictionary ...");
+    let sp = SpinnerBuilder::new("Getting random english word from dictionary.".into()).start();
     let size = get_dict_size(dict);
+
     let offset = rand::thread_rng().gen_range(0, size);
 
     let res = get_content(
@@ -50,6 +53,8 @@ pub fn get_random() -> String {
             ).as_str()
         );
     let entry: Entry = res_to_entry(res);
+    sp.message("Done!".into());
+    sp.close();
 
     if entry.status == 200 {
         let solution: String = entry.results.into_iter().nth(0).unwrap().headword;
