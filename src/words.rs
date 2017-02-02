@@ -1,14 +1,22 @@
 extern crate serde_json;
 
 extern crate hyper;
+extern crate rand;
 
 use std::io::Read;
 use self::hyper::{Client};
+use self::rand::Rng;
 
 #[derive(Serialize, Deserialize)]
 struct Entry {
     status: u8,
     total: i64,
+    results: Vec<Result>,
+}
+
+#[derive(Serialize, Deserialize)]
+struct Result {
+    headword: String,
 }
 
 fn get_dict_size(dict: &str) -> i64 {
@@ -28,15 +36,24 @@ fn res_to_entry(res: hyper::Result<String>) -> Entry {
     return serde_json::from_str(res.unwrap().as_str()).unwrap();
 }
 
-// TODO: Get size of dictionary and choose a random offset to request
 pub fn get_random() -> String {
+    let dict = "lasde";
+    let limit = 1;
     println!("Getting random english word from dictionary ...");
+    let size = get_dict_size(dict);
+    let offset = rand::thread_rng().gen_range(0, size);
 
-    let res = get_content("http://api.pearson.com/v2/dictionaries/lasde/entries?offset=21176&limit=1");
+    let res = get_content(
+        format!(
+            "http://api.pearson.com/v2/dictionaries/{}/entries?offset={}&limit={}",
+            dict, offset, limit
+            ).as_str()
+        );
     let entry: Entry = res_to_entry(res);
+
     if entry.status == 200 {
-        println!("Request successful!");
-        return "imaginatively".to_string().to_uppercase();
+        let solution: String = entry.results.into_iter().nth(0).unwrap().headword;
+        return solution.to_uppercase();
     }
     println!("Request unsuccessful, returned code {}", entry.status);
     println!("Falling back to static string");
