@@ -7,7 +7,6 @@ use std::collections::HashSet;
 
 mod words;
 
-const DEBUG: bool = true;
 const MAXIMUM_WRONG_ANSWERS: i8 = 8;
 
 fn main() {
@@ -15,7 +14,6 @@ fn main() {
 
     let solution: String = words::get_random();
     let mut guessed_chars: HashSet<char> = HashSet::new();
-    debug(&solution);
 
     loop {
         let gap_word = get_gap_word(&solution, &guessed_chars);
@@ -40,12 +38,6 @@ fn main() {
             wrong_answers += 1;
         }
         guessed_chars.insert(guessed_char);
-    }
-}
-
-fn debug(message: &String) {
-    if DEBUG {
-        println!("DEBUG: {}", message);
     }
 }
 
