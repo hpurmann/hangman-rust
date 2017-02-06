@@ -11,8 +11,8 @@ use self::spinner::{SpinnerBuilder};
 
 #[derive(Serialize, Deserialize)]
 struct Entry {
-    status: u8,
-    total: i64,
+    status: u32,
+    total: u64,
     results: Vec<Result>,
 }
 
