@@ -21,38 +21,29 @@ struct Result {
     headword: String,
 }
 
-fn get_dict_size(dict: &str) -> i64 {
-    let offset = 1;
-    let limit = 1;
+fn query(dict: &str, offset: u64, limit: i8) -> Entry {
     let res = get_content(
         format!(
             "http://api.pearson.com/v2/dictionaries/{}/entries?offset={}&limit={}",
             dict, offset, limit
             ).as_str()
         );
-    let entry: Entry = res_to_entry(res);
-    return entry.total;
+    return serde_json::from_str(res.unwrap().as_str()).unwrap();
 }
 
-fn res_to_entry(res: hyper::Result<String>) -> Entry {
-    return serde_json::from_str(res.unwrap().as_str()).unwrap();
+fn get_dict_size(dict: &str) -> u64 {
+    let entry = query(dict, 1, 1);
+    return entry.total;
 }
 
 pub fn get_random() -> String {
     let dict = "lasde";
-    let limit = 1;
     let sp = SpinnerBuilder::new("Getting random english word from dictionary.".into()).start();
     let size = get_dict_size(dict);
 
     let offset = rand::thread_rng().gen_range(0, size);
 
-    let res = get_content(
-        format!(
-            "http://api.pearson.com/v2/dictionaries/{}/entries?offset={}&limit={}",
-            dict, offset, limit
-            ).as_str()
-        );
-    let entry: Entry = res_to_entry(res);
+    let entry = query(dict, offset, 1);
     sp.message("Done!".into());
     sp.close();
 
