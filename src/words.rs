@@ -21,6 +21,14 @@ struct Result {
     headword: String,
 }
 
+fn get_content(url: &str) -> hyper::Result<String> {
+    let client = Client::new();
+    let mut response = client.get(url).send()?;
+    let mut buf = String::new();
+    response.read_to_string(&mut buf)?;
+    Ok(buf)
+}
+
 fn query(dict: &str, offset: u64, limit: i8) -> Entry {
     let res = get_content(
         format!(
@@ -50,12 +58,4 @@ pub fn get_random() -> String {
     println!("Request unsuccessful, returned code {}", entry2.status);
     println!("Falling back to static string");
     return "unimaginatively".to_string().to_uppercase();
-}
-
-fn get_content(url: &str) -> hyper::Result<String> {
-    let client = Client::new();
-    let mut response = client.get(url).send()?;
-    let mut buf = String::new();
-    response.read_to_string(&mut buf)?;
-    Ok(buf)
 }
