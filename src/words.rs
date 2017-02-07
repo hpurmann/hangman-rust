@@ -31,27 +31,23 @@ fn query(dict: &str, offset: u64, limit: i8) -> Entry {
     return serde_json::from_str(res.unwrap().as_str()).unwrap();
 }
 
-fn get_dict_size(dict: &str) -> u64 {
-    let entry = query(dict, 1, 1);
-    return entry.total;
-}
-
 pub fn get_random() -> String {
     let dict = "lasde";
     let sp = SpinnerBuilder::new("Getting random english word from dictionary.".into()).start();
-    let size = get_dict_size(dict);
 
+    let entry1 = query(dict, 1, 1);
+    let size = entry1.total;
     let offset = rand::thread_rng().gen_range(0, size);
 
-    let entry = query(dict, offset, 1);
+    let entry2 = query(dict, offset, 1);
     sp.message("Done!".into());
     sp.close();
 
-    if entry.status == 200 {
-        let solution: String = entry.results.into_iter().nth(0).unwrap().headword;
+    if entry2.status == 200 {
+        let solution: String = entry2.results.into_iter().nth(0).unwrap().headword;
         return solution.to_uppercase();
     }
-    println!("Request unsuccessful, returned code {}", entry.status);
+    println!("Request unsuccessful, returned code {}", entry2.status);
     println!("Falling back to static string");
     return "unimaginatively".to_string().to_uppercase();
 }
